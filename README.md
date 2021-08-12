@@ -1,3 +1,7 @@
+# Offical Repo
+
+https://github.com/mlcommons/hpc/tree/main/deepcam
+
 # Deep Learning Climate Segmentation Benchmark
 
 PyTorch implementation for the climate segmentation benchmark, based on the

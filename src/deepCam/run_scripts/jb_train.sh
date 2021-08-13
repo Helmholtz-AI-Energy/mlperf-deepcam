@@ -16,6 +16,9 @@ export DGXHT=2  # HT is on is 2, HT off is 1
 
 export TRAIN_DATA_PREFIX="/p/largedata/datasets/MLPerf/MLPerfHPC/deepcam_v1.0/"
 export OUTPUT_DIR="/p/project/jb_benchmark/MLPerf-1.0/run-logs/"
+
+export PROJ_LIB="/opt/conda/share/proj/"
+export PYTHONPATH=/opt/conda/bin/:${PYTHONPATH}
 # =============== end of JB specific settings ============================
 
 # network params

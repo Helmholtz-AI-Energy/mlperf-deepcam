@@ -84,14 +84,16 @@ if [ "$TRAINING_SYSTEM" == "booster" ]
     export TRAIN_DATA_PREFIX="/p/largedata/datasets/MLPerf/MLPerfHPC/deepcam_v1.0/"
     export OUTPUT_DIR="/p/project/jb_benchmark/MLPerf-1.0/run-logs/"
 
-    SINGULARITY_FILE="/p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/mlperf-torch.sif"
-    export SINGULARLAUNCHER="singularity run --nv ${SINGULARITY_FILE}"
+    export SINGULARITY_FILE="/p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/mlperf-torch.sif"
+#    SINGULARLAUNCHER="singularity run --nv ${SINGULARITY_FILE}"
 
     PARAMS_SBATCH+=(
       --partition     "booster"
       --output        "${OUTPUT_DIR}slurm-nodes-${SLURM_NNODES}-%j.out"
       --error         "${OUTPUT_DIR}slurm-nodes-${SLURM_NNODES}-%j.err"
     )
+    sbatch "${PARAMS_SBATCH[@]}" start_jb_training.sh
+
 elif [ "$TRAINING_SYSTEM" == "horeka" ]
   then
     # this is the horeka case
@@ -107,8 +109,5 @@ elif [ "$TRAINING_SYSTEM" == "horeka" ]
     )
 else
   echo "must specify system that we are running on! give as first unnamed parameter"
+  exit 128
 fi
-
-#
-
-sbatch $PARAMS_SBATCH  run_and_train.sh

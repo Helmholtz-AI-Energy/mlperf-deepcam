@@ -1,39 +1,27 @@
 #!/bin/bash
-#SBATCH -A jb_benchmark
-#SBATCH -J mlperf_train
-#SBATCH --ntasks-per-node 4
-## #SBATCH -p booster
-#SBATCH --partition largebooster
-#SBATCH --time=00:10:00
-#SBATCH --gres gpu:4
-#SBATCH --output /p/project/jb_benchmark/MLPerf-1.0/slurm-logs-%N-%J.out
-#SBATCH --error /p/project/jb_benchmark/MLPerf-1.0/slurm-logs-%N-%J.err
-#SBATCH --reservation bench-2021-04-09
-
-# this will call the srun
-# script tree:
-#   1. Machine selection
-#   2. set configs  <--- we are here
-#   3. call srun on the run script
-
-TOTAL_TASKS =
+# This file is the first things to be done with srun
 
 ml purge
 #ml GCC OpenMPI
 #cd  /p/project/jb_benchmark/mlperf/training_results_v0.7/NVIDIA/benchmarks/resnet/implementations/mxnet \
-cd /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/
+cd /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/src/deepCam/run_scripts
 
-export DGXNNODES=$SLURM_NNODES
+#export DGXNNODES=$SLURM_NNODES
+SRUN_PARAMS=(
+  --mpi            pspmix
+  --cpu-bind       none
+)
 
-# todo: set up the configs to be correct
-# NOTE
-srun  \
-    --mpi=pspmix --cpu-bind=none \
-    bash -c "\
-      source /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/deepCam/run_scripts/config_DGXA100_common.sh; \
-      singularity run --nv \
-      /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/mlperf-torch.sif  \
-      bash jb_train.sh"
+#srun "${SRUN_PARAMS[@]}" bash -c "singularity run --nv \
+#      /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/mlperf-torch.sif  \
+#      bash jb_train.sh"
+srun "${SRUN_PARAMS[@]}" --pty singularity exec --nv \
+      /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/mlperf-torch.sif \
+      "bash jb_train.sh"
+
+#bash -c "singularity run --nv \
+#      /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/mlperf-torch.sif  \
+#      bash jb_train.sh"
 
 # old version
 #srun  \

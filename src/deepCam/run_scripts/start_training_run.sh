@@ -72,7 +72,6 @@ SBATCH_PARAMS=(
   --gres               "gpu:4"
   --job-name           "deepcam-mlperf"
   --time               "${TIMELIMIT}"
-  --system             "${TRAINING_SYSTEM}"
 )
 
 if [ "$TRAINING_SYSTEM" == "booster" ]

@@ -5,25 +5,26 @@ ml purge
 
 #export DGXNNODES=$SLURM_NNODES
 SRUN_PARAMS=(
-  --mpi            pspmix
-  --cpu-bind       none
+  --mpi               "pspmix"
+  --cpu-bind          "none"
+  --cibtainer-image   "mlperf-torch"
+  --container-mount   "/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/:/work,/hkfs/home/dataset/datasets/deepcam/:/data:ro"
 )
 
 # NOTE: horeka containers require a GPU (need to acquire a node with one)
-export ENROOT_DATA_PATH=/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/
+#export ENROOT_DATA_PATH=/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/
+#
+#ENROOT_PARAMS=(
+#  --env        "NVIDIA_DRIVER_CAPABILITIES"
+#  --mount      "/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/:/work"
+#  --mount      "/hkfs/home/dataset/datasets/deepcam/:/data"
+#  --rw
+#)
 
-ENROOT_PARAMS=(
-  --env        "NVIDIA_DRIVER_CAPABILITIES"
-  --mount      "/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/:/work"
-  --mount      "/hkfs/home/dataset/datasets/deepcam/:/data"
-  --rw
-)
+srun "${SRUN_PARAMS[@]}" bash /work/src/deepCam/run_scripts/horeka_train.sh
 
-#srun "${SRUN_PARAMS[@]}" bash -c "singularity run --nv \
-#      /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/mlperf-torch.sif  \
-#      bash jb_train.sh"
-srun "${SRUN_PARAMS[@]}" enroot exec "${ENROOT_PARAMS[@]}" mlperf-torch \
-  bash /work/src/deepCam/run_scripts/horeka_train.sh
+#srun "${SRUN_PARAMS[@]}" enroot exec "${ENROOT_PARAMS[@]}" mlperf-torch \
+#  bash /work/src/deepCam/run_scripts/horeka_train.sh
 
 # old version
 #srun  \

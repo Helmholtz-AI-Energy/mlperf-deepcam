@@ -17,7 +17,7 @@ SRUN_PARAMS=(
 #      bash jb_train.sh"
 srun "${SRUN_PARAMS[@]}" --pty singularity exec --nv \
       /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/mlperf-torch.sif \
-      "bash jb_train.sh"
+      "bash /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/run_scripts/jb_train.sh"
 
 #bash -c "singularity run --nv \
 #      /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/mlperf-torch.sif  \

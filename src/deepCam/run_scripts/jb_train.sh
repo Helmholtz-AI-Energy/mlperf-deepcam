@@ -30,7 +30,7 @@ PARAMS=(
        --save_frequency                      "400"
        --validation_frequency                "200"
        --max_validation_steps                "50"
-       --logging_frequency                   "0"
+       --logging_frequency                   "1"  # og: 0
        --training_visualization_frequency    "200"
        --validation_visualization_frequency  "40"
        --local_batch_size                    "2"

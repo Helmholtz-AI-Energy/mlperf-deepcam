@@ -10,6 +10,7 @@ cd /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/src/deepCam/run_scripts
 SRUN_PARAMS=(
   --mpi            pspmix
   --cpu-bind       none
+  --label
 )
 
 #srun "${SRUN_PARAMS[@]}" bash -c "singularity run --nv \

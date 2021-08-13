@@ -18,7 +18,7 @@ export TRAIN_DATA_PREFIX="/data/All-Hist"
 export OUTPUT_DIR="/work/run-logs/"
 
 export PROJ_LIB="/opt/conda/share/proj/"
-export PYTHONPATH=/opt/conda/bin/:${PYTHONPATH}
+#export PYTHONPATH=/opt/conda/bin/:${PYTHONPATH}
 # =============== end of HoreKa specific settings ============================
 
 # network params

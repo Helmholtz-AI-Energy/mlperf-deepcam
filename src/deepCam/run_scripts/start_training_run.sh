@@ -20,7 +20,7 @@ while test $# -gt 0; do
       if test $# -gt 0; then
         export TRAINING_SYSTEM=$1
       else
-        echo "no process specified"
+        echo "must specify training system"
         exit 1
       fi
       shift
@@ -34,7 +34,7 @@ while test $# -gt 0; do
       if test $# -gt 0; then
         export SLURM_NNODES=$1
       else
-        echo "no output dir specified"
+        echo "number of nodes must be positive"
         exit 1
       fi
       shift
@@ -43,15 +43,12 @@ while test $# -gt 0; do
       export SLURM_NNODES=`echo $1 | sed -e 's/^[^=]*=//g'`
       shift
       ;;
-    *)
-      break
-      ;;
     -t)
       shift
       if test $# -gt 0; then
         export TIMELIMIT=$1
       else
-        echo "no output dir specified"
+        echo "time limit must be greater than 0"
         exit 1
       fi
       shift
@@ -66,9 +63,9 @@ while test $# -gt 0; do
   esac
 done
 
-# todo: define the SBATCH params here
+if [ -z ${TIMELIMIT} ]; then TIMELIMIT="00:10:00"; fi
 
-PARAMS_SBATCH=(
+SBATCH_PARAMS=(
   --nodes              "${SLURM_NNODES}"
   --tasks-per-node     "4"
   --time               "${TIMELIMIT}"
@@ -81,28 +78,19 @@ PARAMS_SBATCH=(
 if [ "$TRAINING_SYSTEM" == "booster" ]
   then
     # JB
-    export TRAIN_DATA_PREFIX="/p/largedata/datasets/MLPerf/MLPerfHPC/deepcam_v1.0/"
-    export OUTPUT_DIR="/p/project/jb_benchmark/MLPerf-1.0/run-logs/"
-
-    export SINGULARITY_FILE="/p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/mlperf-torch.sif"
-#    SINGULARLAUNCHER="singularity run --nv ${SINGULARITY_FILE}"
-
-    PARAMS_SBATCH+=(
+    SBATCH_PARAMS+=(
       --partition     "booster"
       --output        "${OUTPUT_DIR}slurm-nodes-${SLURM_NNODES}-%j.out"
       --error         "${OUTPUT_DIR}slurm-nodes-${SLURM_NNODES}-%j.err"
     )
-    sbatch "${PARAMS_SBATCH[@]}" start_jb_training.sh
+    sbatch "${SBATCH_PARAMS[@]}" start_jb_training.sh
 
 elif [ "$TRAINING_SYSTEM" == "horeka" ]
   then
-    # this is the horeka case
     export TRAIN_DATA_PREFIX="/hkfs/home/datasets/deepcam/"
     export OUTPUT_DIR=""
 
-    export SINGULARLAUNCHER="enroot"
-
-    PARAMS_SBATCH+=(
+    SBATCH_PARAMS+=(
       --partition     "booster"
       --output        "${OUTPUT_DIR}slurm-nodes-${SLURM_NNODES}-%j.out"
       --error         "${OUTPUT_DIR}slurm-nodes-${SLURM_NNODES}-%j.err"

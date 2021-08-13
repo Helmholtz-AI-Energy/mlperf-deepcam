@@ -13,6 +13,7 @@ export DGXNGPU=2
 export DGXNSOCKET=2
 export DGXSOCKETCORES=24 # 76 CPUs / DGXNSOCKET
 export DGXHT=2  # HT is on is 2, HT off is 1
+
 export TRAIN_DATA_PREFIX="/p/largedata/datasets/MLPerf/MLPerfHPC/deepcam_v1.0/"
 export OUTPUT_DIR="/p/project/jb_benchmark/MLPerf-1.0/run-logs/"
 # =============== end of JB specific settings ============================

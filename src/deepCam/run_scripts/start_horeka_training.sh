@@ -23,7 +23,7 @@ ENROOT_PARAMS=(
 #      /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/mlperf-torch.sif  \
 #      bash jb_train.sh"
 srun "${SRUN_PARAMS[@]}" enroot exec "${ENROOT_PARAMS[@]}" mlperf-torch \
-  bash /work/src/deepCam/run_scripts/jb_train.sh
+  bash /work/src/deepCam/run_scripts/horeka_train.sh
 
 # old version
 #srun  \

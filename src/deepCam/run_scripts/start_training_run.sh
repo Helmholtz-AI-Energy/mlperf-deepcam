@@ -97,7 +97,7 @@ elif [ "$TRAINING_SYSTEM" == "horeka" ]
       --output        "${OUTPUT_DIR}slurm-nodes-${SLURM_NNODES}-%j.out"
       --error         "${OUTPUT_DIR}slurm-nodes-${SLURM_NNODES}-%j.err"
     )
-    sbatch "${SBATCH_PARAMS[@]}" start_jb_training.sh
+    sbatch "${SBATCH_PARAMS[@]}" start_horeka_training.sh
 else
   echo "must specify system that we are running on! give as first unnamed parameter"
   exit 128

@@ -3,7 +3,7 @@
 # runs benchmark and reports time to convergence
 # this should be run with srun and singularity (see start_jb_training.sh)
 
-# ====================== JB specific settings ============================
+# ====================== HoreKa specific settings ============================
 export OMPI_MCA_btl="^openib" #To prevent deadlock between Horovd and NCCL at 96 nodes
 export NCCL_SOCKET_IFNAME="ib0"
 export CUDA_VISIBLE_DEVICES="0,1,2,3"
@@ -11,15 +11,15 @@ export DGXSYSTEM=$(basename $(readlink -f ${BASH_SOURCE[0]}) | sed 's/^config_//
 
 export DGXNGPU=2
 export DGXNSOCKET=2
-export DGXSOCKETCORES=24 # 76 CPUs / DGXNSOCKET
+export DGXSOCKETCORES=36 # 76 CPUs / DGXNSOCKET
 export DGXHT=2  # HT is on is 2, HT off is 1
 
-export TRAIN_DATA_PREFIX="/p/largedata/datasets/MLPerf/MLPerfHPC/deepcam_v1.0/"
-export OUTPUT_DIR="/p/project/jb_benchmark/MLPerf-1.0/run-logs/"
+export TRAIN_DATA_PREFIX="/data/All-Hist"
+export OUTPUT_DIR="/work/run-logs/"
 
 export PROJ_LIB="/opt/conda/share/proj/"
 export PYTHONPATH=/opt/conda/bin/:${PYTHONPATH}
-# =============== end of JB specific settings ============================
+# =============== end of HoreKa specific settings ============================
 
 # network params
 PARAMS=(
@@ -109,7 +109,7 @@ fi
 if [[ ${PROFILE} -ge 1 ]]; then
     TMPDIR=/results ${DISTRIBUTED} ${PROFILE_COMMAND} python3 train_imagenet.py "${PARAMS[@]}"; ret_code=$?
 else
-    ${DISTRIBUTED} python ../train_hdf5_ddp.py "${PARAMS[@]}"; ret_code=$?
+    ${DISTRIBUTED} python /work/src/deepCam/train_hdf5_ddp.py "${PARAMS[@]}"; ret_code=$?
 fi
 
 #sleep 3

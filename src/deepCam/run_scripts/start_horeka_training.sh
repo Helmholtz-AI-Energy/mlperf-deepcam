@@ -2,9 +2,6 @@
 # This file is the first things to be done with srun
 
 ml purge
-#ml GCC OpenMPI
-#cd  /p/project/jb_benchmark/mlperf/training_results_v0.7/NVIDIA/benchmarks/resnet/implementations/mxnet \
-cd /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/src/deepCam/run_scripts
 
 #export DGXNNODES=$SLURM_NNODES
 SRUN_PARAMS=(
@@ -12,17 +9,21 @@ SRUN_PARAMS=(
   --cpu-bind       none
 )
 
+# NOTE: horeka containers require a GPU (need to acquire a node with one)
+export ENROOT_DATA_PATH=/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/
+
+ENROOT_PARAMS=(
+  --env        "NVIDIA_DRIVER_CAPABILITIES"
+  --mount      "/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/:/work"
+  --mount      "/hkfs/home/dataset/datasets/deepcam/:/data"
+  --rw
+)
+
 #srun "${SRUN_PARAMS[@]}" bash -c "singularity run --nv \
 #      /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/mlperf-torch.sif  \
 #      bash jb_train.sh"
-srun "${SRUN_PARAMS[@]}" singularity exec --nv \
-      /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/mlperf-torch.sif bash jb_train.sh
-
-#/p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/run_scripts/jb_train.sh
-
-#bash -c "singularity run --nv \
-#      /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/mlperf-torch.sif  \
-#      bash jb_train.sh"
+srun "${SRUN_PARAMS[@]}" enroot exec "${ENROOT_PARAMS[@]}" mlperf-torch \
+  bash /work/src/deepCam/run_scripts/jb_train.sh
 
 # old version
 #srun  \

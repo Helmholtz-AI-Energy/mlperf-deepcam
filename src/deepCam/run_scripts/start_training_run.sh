@@ -90,13 +90,14 @@ if [ "$TRAINING_SYSTEM" == "booster" ]
 elif [ "$TRAINING_SYSTEM" == "horeka" ]
   then
     export TRAIN_DATA_PREFIX="/hkfs/home/datasets/deepcam/"
-    export OUTPUT_DIR=""
+    export OUTPUT_DIR="/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/run-logs"
 
     SBATCH_PARAMS+=(
-      --partition     "booster"
+      --partition     "accelerated"
       --output        "${OUTPUT_DIR}slurm-nodes-${SLURM_NNODES}-%j.out"
       --error         "${OUTPUT_DIR}slurm-nodes-${SLURM_NNODES}-%j.err"
     )
+    sbatch "${SBATCH_PARAMS[@]}" start_jb_training.sh
 else
   echo "must specify system that we are running on! give as first unnamed parameter"
   exit 128

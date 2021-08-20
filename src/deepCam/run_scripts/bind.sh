@@ -56,8 +56,19 @@ if [ $# -lt 1 ]; then
 fi
 
 ################################################################################
+# Early out if slurm binding are set
+################################################################################
+
+if [ -z "${SLURM_CPU_BIND_USER_SET}" ]; then
+    echo "Using bindings from SLURM: ${SLURM_CPU_BIND_TYPE}"
+    return
+fi
+
+################################################################################
 # Get system params
 ################################################################################
+
+echo "Using NUMA binding"
 
 # LOCAL_RANK is set with an enroot hook for Pytorch containers
 # SLURM_LOCALID is set by Slurm

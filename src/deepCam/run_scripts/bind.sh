@@ -90,6 +90,11 @@ if [ ${num_gpus} -gt 1 ]; then
 else
     readonly gpus_per_node=1
 fi
+
+echo "NUMA cores per node: "$cores_per_node
+echo "GPUS per node: "$gpus_per_node
+echo "NGPUS: "$num_gpus
+
 readonly cores_per_gpu=$(( cores_per_node / gpus_per_node ))
 readonly local_node=$(( local_rank / gpus_per_node ))
 
@@ -203,6 +208,9 @@ esac
 ################################################################################
 # Exec
 ################################################################################
+
+pushd /opt/deepCam
+
 
 if [ "${#numactl_args[@]}" -gt 0 ] ; then
     set -x

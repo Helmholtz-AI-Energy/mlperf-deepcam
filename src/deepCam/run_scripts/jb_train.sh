@@ -14,7 +14,8 @@ export DGXNSOCKET=2
 export DGXSOCKETCORES=24 # 76 CPUs / DGXNSOCKET
 export DGXHT=2  # HT is on is 2, HT off is 1
 
-export TRAIN_DATA_PREFIX="/p/largedata/datasets/MLPerf/MLPerfHPC/deepcam_v1.0/"
+export TRAIN_DATA_PREFIX="/p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/data"
+#"/p/largedata/datasets/MLPerf/MLPerfHPC/deepcam_v1.0/"
 export OUTPUT_DIR="/p/project/jb_benchmark/MLPerf-1.0/run-logs/"
 
 export PROJ_LIB="/opt/conda/share/proj/"
@@ -36,7 +37,7 @@ PARAMS=(
        --logging_frequency="1"  # og: 0
        --training_visualization_frequency="200"
        --validation_visualization_frequency="40"
-       --local_batch_size"2"
+       --local_batch_size="2"
 #       --channels                            "{[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]}"
        --optimizer="LAMB"
        --start_lr="1e-3"
@@ -44,16 +45,12 @@ PARAMS=(
        --weight_decay="1e-2"
 #       --loss_weight_pow                     "-0.125"
        --lr_warmup_steps="0"
-       --lr_warmup_factor                    "1.0"
-       --lr_schedule                         "type=multistep,milestones=800,decay_rate=0.1"
+       --lr_warmup_factor="1.0"
+       --lr_schedule="type=multistep,milestones=800,decay_rate=0.1"
 #       "{\"type\":\"multistep\",\"milestones\":\"15000 25000\",\"decay_rate\":\"0.1\"}"
 #       --target_iou                          "0.82"
-       --model_prefix                        "classifier"
-       --amp_opt_level                       "O1"
-#       --enable_wandb
-#       --resume_logging
-#       |& tee
-#       -a ${output_dir}/train.out
+       --model_prefix="classifier"
+       --amp_opt_level="O1"
 )
 
 # start timing
@@ -68,7 +65,6 @@ readonly local_rank="${LOCAL_RANK:=${SLURM_LOCALID:=${OMPI_COMM_WORLD_LOCAL_RANK
 echo "running benchmark"
 export NGPUS=$SLURM_NTASKS_PER_NODE
 export NCCL_DEBUG=${NCCL_DEBUG:-"WARN"}
-
 if [[ ${PROFILE} -ge 1 ]]; then
     export TMPDIR="/profile_result/"
 fi
@@ -109,7 +105,7 @@ fi
 if [[ ${PROFILE} -ge 1 ]]; then
     TMPDIR=/results ${DISTRIBUTED} ${PROFILE_COMMAND} python3 train_imagenet.py "${PARAMS[@]}"; ret_code=$?
 else
-    ${DISTRIBUTED} python ../train_hdf5_ddp.py "${PARAMS[@]}"; ret_code=$?
+    ${DISTRIBUTED} python -u ../train_hdf5_ddp.py "${PARAMS[@]}"; ret_code=$?
 fi
 
 #sleep 3

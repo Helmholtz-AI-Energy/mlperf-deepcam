@@ -8,7 +8,7 @@
 start=$(date +%s)
 start_fmt=$(date +%Y-%m-%d\ %r)
 echo "STARTING TIMING RUN AT $start_fmt"
-
+pwd
 # assemble launch command
 export RUN_TAG=${RUN_TAG:-deepcam_ngpu$(( ${SLURM_NNODES} * ${DGXNGPU} ))_${SLURM_JOBID}}
 export OUTPUT_DIR=${OUTPUT_ROOT:-/tmp}/${RUN_TAG}
@@ -52,7 +52,7 @@ PARAMS=(
 )
 
 # change directory
-pushd /opt/deepCam
+# pushd /opt/deepCam
 
 # profile command:
 if [ ! -z ${OMPI_COMM_WORLD_RANK} ]; then
@@ -74,6 +74,7 @@ fi
 # bind command
 BIND_CMD="./bind.sh --cluster=selene --ib=single --cpu=exclusive"
 
+#pushd /opt/deepCam
 # do we cache data
 if [ ! -z ${DATA_CACHE_DIRECTORY} ]; then
     PARAMS+=(--data_cache_directory ${DATA_CACHE_DIRECTORY})

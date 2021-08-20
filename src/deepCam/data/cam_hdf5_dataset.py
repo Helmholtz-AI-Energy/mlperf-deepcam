@@ -86,6 +86,7 @@ class CamDataset(Dataset):
         self.init_reader()
 
         #get shapes
+        print(self.source, self.files)
         filename = os.path.join(self.source, self.files[0])
         with h5.File(filename, "r") as fin:
             self.data_shape = fin['climate']['data'].shape

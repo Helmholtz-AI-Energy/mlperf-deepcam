@@ -45,7 +45,6 @@ import torch.optim as optim
 from torch.autograd import Variable
 from torch.utils.data import Dataset
 from torch.utils.data import DataLoader
-
 # Custom
 from utils import utils
 from utils import losses
@@ -92,7 +91,6 @@ class StoreDictKeyPair(ap.Action):
 
 #main function
 def main(pargs):
-
     # this should be global
     global have_wandb
 
@@ -101,6 +99,8 @@ def main(pargs):
     comm_rank = comm.get_rank()
     comm_local_rank = comm.get_local_rank()
     comm_size = comm.get_size()
+
+    print("finished comm init", comm_size, comm_rank, comm_local_rank)
 
     # set up logging
     pargs.logging_frequency = max([pargs.logging_frequency, 1])
@@ -543,7 +543,6 @@ def main(pargs):
 
 
 if __name__ == "__main__":
-
     #arguments
     AP = ap.ArgumentParser()
     AP.add_argument("--wireup_method", type=str, default="nccl-openmpi", choices=["nccl-openmpi", "nccl-slurm", "nccl-slurm-pmi", "mpi"], help="Specify what is used for wiring up the ranks")

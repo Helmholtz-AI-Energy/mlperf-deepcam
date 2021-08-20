@@ -63,6 +63,7 @@ def get_size():
 
 def init(method):
     #get master address and port
+    print("comm init method", method)
     if method == "nccl-openmpi":
         addrport = os.getenv("PMIX_SERVER_URI2").split("//")[1]
         #use that URI
@@ -73,7 +74,7 @@ def init(method):
         os.environ["MASTER_PORT"] = port
         rank = int(os.getenv('OMPI_COMM_WORLD_RANK',0))
         world_size = int(os.getenv("OMPI_COMM_WORLD_SIZE",0))
-        
+        print(addrport, rank, world_size)
         #init DDP
         dist.init_process_group(backend = "nccl",
                                 rank = rank,
@@ -88,6 +89,7 @@ def init(method):
         os.environ["MASTER_PORT"] = port
 
         #init DDP
+        print(rank, world_size, address)
         dist.init_process_group(backend = "nccl",
                                 rank = rank,
                                 world_size = world_size)

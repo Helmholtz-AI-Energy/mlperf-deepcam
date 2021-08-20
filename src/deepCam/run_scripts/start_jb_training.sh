@@ -27,4 +27,5 @@ SINGULARITY_FILE="/p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/nvidi
 srun "${SRUN_PARAMS[@]}" singularity exec --nv ${SINGULARITY_FILE} \
       bash -c "\
       	source ${SCRIPT_DIR}configs/base_config.sh; \
+      	export SLURM_CPU_BIND_USER_SET="none"; \
       	bash run_and_time.sh"

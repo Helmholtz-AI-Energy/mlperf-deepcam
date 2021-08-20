@@ -51,9 +51,6 @@ PARAMS=(
     ${ADDITIONAL_ARGS}
 )
 
-# change directory
-# pushd /opt/deepCam
-
 # profile command:
 if [ ! -z ${OMPI_COMM_WORLD_RANK} ]; then
     WORLD_RANK=${OMPI_COMM_WORLD_RANK}
@@ -77,6 +74,8 @@ fi
 if [ -n "${SLURM_CPU_BIND_USER_SET}" ]; then
     echo "Using bindings from SLURM: ${SLURM_CPU_BIND_TYPE}"
     BIND_CMD=""
+    # change directory (done within bind.sh if using NUMA)
+    pushd /opt/deepCam
 else
     echo "Using NUMA binding"
     BIND_CMD="./bind.sh --cluster=selene --ib=single --cpu=exclusive"

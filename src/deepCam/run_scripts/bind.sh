@@ -59,7 +59,7 @@ fi
 # Early out if slurm binding are set
 ################################################################################
 
-if [ -z "${SLURM_CPU_BIND_USER_SET}" ]; then
+if [ -n "${SLURM_CPU_BIND_USER_SET}" ]; then
     echo "Using bindings from SLURM: ${SLURM_CPU_BIND_TYPE}"
     return
 fi

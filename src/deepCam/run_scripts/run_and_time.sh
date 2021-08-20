@@ -70,9 +70,17 @@ else
     PROFILE_CMD=""
 fi
 
+################################################################################
+# Binding
+################################################################################
 
-# bind command
-BIND_CMD="./bind.sh --cluster=selene --ib=single --cpu=exclusive"
+if [ -n "${SLURM_CPU_BIND_USER_SET}" ]; then
+    echo "Using bindings from SLURM: ${SLURM_CPU_BIND_TYPE}"
+    BIND_CMD=""
+else
+    echo "Using NUMA binding"
+    BIND_CMD="./bind.sh --cluster=selene --ib=single --cpu=exclusive"
+fi
 
 #pushd /opt/deepCam
 # do we cache data

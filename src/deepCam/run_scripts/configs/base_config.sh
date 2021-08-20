@@ -13,6 +13,7 @@ export LR_WARMUP_STEPS=200
 export LR_WARMUP_FACTOR=1.
 export WEIGHT_DECAY=0.01
 export BATCHNORM_GROUP_SIZE=1
+export SEED=999
 
 # data parameters
 export SHUFFLE_MODE="global"

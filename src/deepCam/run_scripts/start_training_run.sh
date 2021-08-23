@@ -54,7 +54,7 @@ while test $# -gt 0; do
       shift
       ;;
     --time*)
-      export TIMELIMIT=`echo $1 | sed -e 's/^[^=]*=//g'`
+      export TIMELIMIT=$1
       shift
       ;;
     *)
@@ -83,11 +83,12 @@ if [ "$TRAINING_SYSTEM" == "booster" ]
     export OUTPUT_ROOT="/p/project/jb_benchmark/MLPerf-1.0/run-logs/"
 
     SBATCH_PARAMS+=(
-      --partition     "develbooster"
+      --partition     "booster"
       --output        "${OUTPUT_DIR}slurm-nodes-${SLURM_NNODES}-%j.out"
       --error         "${OUTPUT_DIR}slurm-nodes-${SLURM_NNODES}-%j.err"
       --account       "jb_benchmark"
     )
+    echo "${TIMELIMIT}"
     sbatch "${SBATCH_PARAMS[@]}" start_jb_training.sh
 
 elif [ "$TRAINING_SYSTEM" == "horeka" ]

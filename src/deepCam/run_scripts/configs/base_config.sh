@@ -18,6 +18,7 @@ export SEED=999
 # data parameters
 export SHUFFLE_MODE="global"
 export DATA_FORMAT="dali-es"
+#"dali-es"
 export PRECISION_MODE="amp"
 export LOCAL_VALIDATION_BATCH_SIZE=8
 
@@ -32,3 +33,7 @@ export DGXNGPU=4
 export DGXNNODES=${SLURM_NNODES}
 export DGXSYSTEM=$(basename $(readlink -f ${BASH_SOURCE[0]}) | sed 's/^config_//' | sed 's/\.sh$//' )
 export WALLTIME=00:30:00
+
+#export ENABLE_PROFILING=1
+#export CAPTURE_RANGE_START=500
+#export CAPTURE_RANGE_STOP=1500

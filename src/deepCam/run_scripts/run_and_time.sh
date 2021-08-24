@@ -78,7 +78,9 @@ if [ -n "${SLURM_CPU_BIND_USER_SET}" ]; then
     pushd /opt/deepCam
 else
     echo "Using NUMA binding"
-    BIND_CMD="./bind.sh --cluster=selene --ib=single --cpu=exclusive"
+    BIND_CMD="./bind.sh --cpu=${SCRIPT_DIR}juwels_binding.sh --mem=${SCRIPT_DIR}juwels_binding.sh --ib=single"
+
+    #BIND_CMD="./bind.sh --cluster=selene --ib=single --cpu=exclusive"
 fi
 
 #pushd /opt/deepCam
@@ -118,7 +120,7 @@ elif [ ! -z ${CAPTURE_RANGE_START} ]; then
     PARAMS+=(
 	--capture_range_start ${CAPTURE_RANGE_START}
 	--capture_range_stop ${CAPTURE_RANGE_STOP}
-	#--io_only
+	--io_only
     ) 
 else
     echo "Running Single Instance Training"

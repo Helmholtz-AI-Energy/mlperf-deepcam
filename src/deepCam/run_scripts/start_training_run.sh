@@ -94,8 +94,8 @@ if [ "$TRAINING_SYSTEM" == "booster" ]
 elif [ "$TRAINING_SYSTEM" == "horeka" ]
   then
     export TRAIN_DATA_PREFIX="/hkfs/home/datasets/deepcam/"
-    export OUTPUT_DIR="/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/run-logs"
-    export OUTPUT_ROOT="/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/run-logs"
+    export OUTPUT_DIR="/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/run-logs/"
+    export OUTPUT_ROOT="/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/run-logs/"
 
     SBATCH_PARAMS+=(
       --partition     "accelerated"

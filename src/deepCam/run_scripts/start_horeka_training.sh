@@ -7,9 +7,19 @@ ml purge
 SRUN_PARAMS=(
   --mpi               "pspmix"
   --cpu-bind          "none"
-  --cibtainer-image   "mlperf-torch"
-  --container-mount   "/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/:/work,/hkfs/home/dataset/datasets/deepcam/:/data:ro"
+  --cibtainer-image   "nvidia-torch"
+  --container-mount   "/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/:/work,/hkfs/home/dataset/datasets/deepcam/:/data"
 )
+
+export SLURM_CPU_BIND_USER_SET="ldoms"
+
+export TRAIN_DATA_PREFIX="/hkfs/home/datasets/deepcam/"
+export OUTPUT_DIR="/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/run-logs/"
+export OUTPUT_ROOT="/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/run-logs/"
+
+#export CUDA_AVAILABLE_DEVICES="0,1,2,3"
+
+export SCRIPT_DIR="/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/src/deepCam/run_scripts/"
 
 # NOTE: horeka containers require a GPU (need to acquire a node with one)
 #export ENROOT_DATA_PATH=/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/
@@ -21,7 +31,10 @@ SRUN_PARAMS=(
 #  --rw
 #)
 
-srun "${SRUN_PARAMS[@]}" bash /work/src/deepCam/run_scripts/horeka_train.sh
+srun "${SRUN_PARAMS[@]}" bash -c "\
+      	source ${SCRIPT_DIR}configs/base_config.sh; \
+	      export SLURM_CPU_BIND_USER_SET=\"none\"; \
+      	bash run_and_time.sh"
 
 #srun "${SRUN_PARAMS[@]}" enroot exec "${ENROOT_PARAMS[@]}" mlperf-torch \
 #  bash /work/src/deepCam/run_scripts/horeka_train.sh

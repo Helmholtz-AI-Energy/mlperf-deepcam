@@ -78,24 +78,29 @@ if [ -n "${SLURM_CPU_BIND_USER_SET}" ]; then
     pushd /opt/deepCam
 else
     echo "Using NUMA binding"
-    BIND_CMD="./bind.sh --cpu=${SCRIPT_DIR}juwels_binding.sh --mem=${SCRIPT_DIR}juwels_binding.sh --ib=single"
-
+    if [ "$TRAINING_SYSTEM" == "booster" ]
+      then
+        BIND_CMD="./bind.sh --cpu=${SCRIPT_DIR}juwels_binding.sh --mem=${SCRIPT_DIR}juwels_binding.sh --ib=single"
+    else
+      # this is the horeka case
+      BIND_CMD="./bind.sh --cpu=${SCRIPT_DIR}horeka_binding.sh --mem=${SCRIPT_DIR}horeka_binding.sh --ib=single"
+    fi
     #BIND_CMD="./bind.sh --cluster=selene --ib=single --cpu=exclusive"
 fi
 
 #pushd /opt/deepCam
 # do we cache data
-if [ ! -z ${DATA_CACHE_DIRECTORY} ]; then
-    PARAMS+=(--data_cache_directory ${DATA_CACHE_DIRECTORY})
+if [ ! -z "${DATA_CACHE_DIRECTORY}" ]; then
+    PARAMS+=(--data_cache_directory "${DATA_CACHE_DIRECTORY}")
 fi
 
 # run script selection:
-if [ ! -z ${TRAINING_INSTANCE_SIZE} ]; then
+if [ ! -z "${TRAINING_INSTANCE_SIZE}" ]; then
     echo "Running Multi Instance Training"
     RUN_SCRIPT="./train_instance.py"
-    PARAMS+=(--training_instance_size ${TRAINING_INSTANCE_SIZE})
+    PARAMS+=(--training_instance_size "${TRAINING_INSTANCE_SIZE}")
 
-    if [ ! -z ${STAGE_DIR_PREFIX} ]; then
+    if [ ! -z "${STAGE_DIR_PREFIX}" ]; then
 	PARAMS+=(
 	    --stage_dir_prefix ${STAGE_DIR_PREFIX}
 	    --stage_num_workers ${STAGE_NUM_WORKERS:-1}

@@ -65,6 +65,8 @@ done
 
 if [ -z ${TIMELIMIT} ]; then TIMELIMIT="00:10:00"; fi
 
+echo "Job time limit: "${TIMELIMIT}
+
 SBATCH_PARAMS=(
   --nodes              "${SLURM_NNODES}"
   --tasks-per-node     "4"

@@ -9,6 +9,7 @@ start=$(date +%s)
 start_fmt=$(date +%Y-%m-%d\ %r)
 echo "STARTING TIMING RUN AT $start_fmt"
 pwd
+echo $CUDA_AVAILABLE_DEVICES
 # assemble launch command
 export RUN_TAG=${RUN_TAG:-deepcam_ngpu$(( ${SLURM_NNODES} * ${DGXNGPU} ))_${SLURM_JOBID}}
 export OUTPUT_DIR=${OUTPUT_ROOT:-/tmp}/${RUN_TAG}

@@ -215,9 +215,6 @@ esac
 # Exec
 ################################################################################
 
-pushd /opt/deepCam
-
-
 if [ "${#numactl_args[@]}" -gt 0 ] ; then
     set -x
     exec numactl "${numactl_args[@]}" -- "${@}"

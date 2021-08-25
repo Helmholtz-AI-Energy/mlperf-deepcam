@@ -75,21 +75,25 @@ fi
 if [ -n "${SLURM_CPU_BIND_USER_SET}" ]; then
     echo "Using bindings from SLURM: ${SLURM_CPU_BIND_TYPE}"
     BIND_CMD=""
-    # change directory (done within bind.sh if using NUMA)
-    pushd /opt/deepCam
 else
     echo "Using NUMA binding"
     if [ "$TRAINING_SYSTEM" == "booster" ]
       then
-        BIND_CMD="./bind.sh --cpu=${SCRIPT_DIR}juwels_binding.sh --mem=${SCRIPT_DIR}juwels_binding.sh --ib=single"
+        BIND_CMD="bash ${SCRIPT_DIR}bind.sh --cpu=${SCRIPT_DIR}juwels_binding.sh \
+                  --mem=${SCRIPT_DIR}juwels_binding.sh --ib=single"
     else
       # this is the horeka case
-      BIND_CMD="./bind.sh --cpu=${SCRIPT_DIR}horeka_binding.sh --mem=${SCRIPT_DIR}horeka_binding.sh --ib=single"
+      BIND_CMD="bash ${SCRIPT_DIR}bind.sh --cpu=${SCRIPT_DIR}horeka_binding.sh \
+                --mem=${SCRIPT_DIR}horeka_binding.sh --ib=single"
     fi
     #BIND_CMD="./bind.sh --cluster=selene --ib=single --cpu=exclusive"
 fi
 
-#pushd /opt/deepCam
+################################################################################
+# End binding
+################################################################################
+pushd "${DEEPCAM_DIR}"
+
 # do we cache data
 if [ ! -z "${DATA_CACHE_DIRECTORY}" ]; then
     PARAMS+=(--data_cache_directory "${DATA_CACHE_DIRECTORY}")
@@ -124,20 +128,19 @@ elif [ ! -z ${CAPTURE_RANGE_START} ]; then
     echo "Running Profiling"
     RUN_SCRIPT="./profile.py"
     PARAMS+=(
-	--capture_range_start ${CAPTURE_RANGE_START}
-	--capture_range_stop ${CAPTURE_RANGE_STOP}
-	${ADDITIONAL_PROFILE_ARGS}
+      --capture_range_start ${CAPTURE_RANGE_START}
+      --capture_range_stop ${CAPTURE_RANGE_STOP}
+      ${ADDITIONAL_PROFILE_ARGS}
     ) 
 else
     echo "Running Single Instance Training"
     RUN_SCRIPT="./train.py"
 fi
 
-
 # cleanup command
 CLEANUP_CMD="cp ${OUTPUT_DIR}/logs/${RUN_TAG}.log /results/; \
              sed -i 's|SUBMISSION_ORG_PLACEHOLDER|NVIDIA Corporation|g' /results/${RUN_TAG}.log; \
-	     sed -i 's|SUBMISSION_PLATFORM_PLACEHOLDER|${DGXSYSTEM}|g' /results/${RUN_TAG}.log"
+	           sed -i 's|SUBMISSION_PLATFORM_PLACEHOLDER|${DGXSYSTEM}|g' /results/${RUN_TAG}.log"
 
 # run command
 ${BIND_CMD} ${PROFILE_CMD} python ${RUN_SCRIPT} "${PARAMS[@]}"; ret_code=$?

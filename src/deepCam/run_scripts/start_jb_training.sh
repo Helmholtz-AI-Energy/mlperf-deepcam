@@ -13,8 +13,7 @@ SRUN_PARAMS=(
 
 export SLURM_CPU_BIND_USER_SET="ldoms"
 
-
-export TRAIN_DATA_PREFIX="/p/scratch/jb_benchmark/deepCam"
+export DATA_DIR_PREFIX="/p/scratch/jb_benchmark/deepCam/"
 
 export OUTPUT_ROOT="/p/project/jb_benchmark/MLPerf-1.0/run-logs"
 #export CUDA_AVAILABLE_DEVICES="0,1,2,3"
@@ -22,11 +21,9 @@ export OUTPUT_ROOT="/p/project/jb_benchmark/MLPerf-1.0/run-logs"
 SCRIPT_DIR="/p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/src/deepCam/run_scripts/"
 SINGULARITY_FILE="/p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/nvidia-deepcam.sif"
 
-#srun "${SRUN_PARAMS[@]}" bash -c "singularity run --nv \
-#      /p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/mlperf-torch.sif  \
-#      bash jb_train.sh"
-srun "${SRUN_PARAMS[@]}" singularity exec --nv --bind "${TRAIN_DATA_PREFIX}":/data ${SINGULARITY_FILE} \
-      bash -c "\
-      	source ${SCRIPT_DIR}configs/base_config.sh; \
-	export SLURM_CPU_BIND_USER_SET=\"none\"; \
-      	bash run_and_time.sh"
+srun "${SRUN_PARAMS[@]}" singularity exec --nv \
+  --bind "${DATA_DIR_PREFIX}":/data ${SINGULARITY_FILE} \
+    bash -c "\
+      source ${SCRIPT_DIR}configs/base_config.sh; \
+	    export SLURM_CPU_BIND_USER_SET=\"none\"; \
+      bash run_and_time.sh"

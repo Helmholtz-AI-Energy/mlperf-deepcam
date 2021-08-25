@@ -125,7 +125,7 @@ elif [ ! -z ${CAPTURE_RANGE_START} ]; then
     PARAMS+=(
 	--capture_range_start ${CAPTURE_RANGE_START}
 	--capture_range_stop ${CAPTURE_RANGE_STOP}
-	--io_only
+	${ADDITIONAL_PROFILE_ARGS}
     ) 
 else
     echo "Running Single Instance Training"

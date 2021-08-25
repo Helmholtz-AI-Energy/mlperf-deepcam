@@ -14,7 +14,7 @@ SRUN_PARAMS=(
 export SLURM_CPU_BIND_USER_SET="ldoms"
 
 
-export TRAIN_DATA_PREFIX="/p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/data"
+export TRAIN_DATA_PREFIX="/p/scratch/jb_benchmark/deepCam"
 
 export OUTPUT_ROOT="/p/project/jb_benchmark/MLPerf-1.0/run-logs"
 #export CUDA_AVAILABLE_DEVICES="0,1,2,3"

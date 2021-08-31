@@ -18,6 +18,9 @@ export DATA_FORMAT="dali-es"
 export PRECISION_MODE="amp"
 export LOCAL_VALIDATION_BATCH_SIZE=8
 
+# output parameters
+export OUTPUT_ROOT=/results/best
+
 # auxiliary parameters
 export LOGGING_FREQUENCY=10
 
@@ -25,7 +28,11 @@ export LOGGING_FREQUENCY=10
 export ADDITIONAL_ARGS="--enable_jit --disable_comm_overlap --enable_graph"
 
 # system parameters
-export DGXNGPU=8
-export DGXNNODES=128
+#export DGXNGPU=8
+#export DGXNNODES=128
+#export DGXSYSTEM=$(basename $(readlink -f ${BASH_SOURCE[0]}) | sed 's/^config_//' | sed 's/\.sh$//' )
+#export WALLTIME=00:30:00
+export DGXNGPU=4
+export DGXNNODES=256
 export DGXSYSTEM=$(basename $(readlink -f ${BASH_SOURCE[0]}) | sed 's/^config_//' | sed 's/\.sh$//' )
-export WALLTIME=00:30:00
+export WALLTIME=01:00:00

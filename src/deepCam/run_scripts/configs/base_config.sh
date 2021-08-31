@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export WIREUP_METHOD="nccl-slurm"
-
 # hyperparameters
 export LOCAL_BATCH_SIZE=2
 export START_LR=0.004

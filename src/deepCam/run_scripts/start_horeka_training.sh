@@ -13,6 +13,8 @@ SRUN_PARAMS=(
 export SLURM_CPU_BIND_USER_SET="ldoms"
 export DATA_DIR_PREFIX="/hkfs/home/dataset/datasets/deepcam_npy/"
 export OUTPUT_ROOT="/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/run-logs/"
+
+export WIREUP_METHOD="nccl-slurm-pmi"
 #export CUDA_AVAILABLE_DEVICES="0,1,2,3"
 export DEEPCAM_DIR="/hkfs/work/workspace/scratch/qv2382-mlperf/mlperf-deepcam/image-src/"
 

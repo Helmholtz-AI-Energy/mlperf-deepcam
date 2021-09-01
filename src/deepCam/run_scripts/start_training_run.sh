@@ -57,6 +57,11 @@ while test $# -gt 0; do
       export TIMELIMIT=$1
       shift
       ;;
+    -c)
+      shift
+      export CONFIG_FILE=$1
+      shift
+      ;;
     *)
       break
       ;;

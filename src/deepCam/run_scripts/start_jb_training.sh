@@ -32,6 +32,7 @@ if [ -n "${CONFIG_FILE}" ]
     export CONFIG_FILE="${SCRIPT_DIR}configs/best_configs/config_DGXA100_512GPU_BS1024_graph.sh"
 fi
 
+cat "${CONFIG_FILE}"
 
 srun "${SRUN_PARAMS[@]}" singularity exec --nv \
   --bind "${DATA_DIR_PREFIX}",${SCRIPT_DIR},${OUTPUT_ROOT} ${SINGULARITY_FILE} \

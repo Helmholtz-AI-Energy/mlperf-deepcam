@@ -60,6 +60,7 @@ while test $# -gt 0; do
     -c)
       shift
       export CONFIG_FILE=$1
+      echo $CONFIG_FILE
       shift
       ;;
     *)

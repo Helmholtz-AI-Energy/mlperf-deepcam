@@ -25,13 +25,15 @@ export DEEPCAM_DIR="/opt/deepCam/"
 #export CUDA_AVAILABLE_DEVICES="0,1,2,3"
 
 SCRIPT_DIR="/p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/src/deepCam/run_scripts/"
-SINGULARITY_FILE="/p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/nvidia-deepcam.sif"
+SINGULARITY_FILE="/p/project/jb_benchmark/MLPerf-1.0/mlperf-deepcam/docker/nvidia-optimized-image-2.sif"
+#nvidia-optimized-master.sif"
+#nvidia-deepcam.sif"
 
 if [ -n "${CONFIG_FILE}" ]
   then
     export CONFIG_FILE="${SCRIPT_DIR}configs/best_configs/config_DGXA100_512GPU_BS1024_graph.sh"
 fi
-
+echo "${CONFIG_FILE}"
 cat "${CONFIG_FILE}"
 
 srun "${SRUN_PARAMS[@]}" singularity exec --nv \
